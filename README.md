@@ -38,7 +38,7 @@ The default intervals are:
 
 ## Capabilities
 
-- [ ] Allow setting duration for work, short break, and long break intervals via
+- [x] Allow setting duration for work, short break, and long break intervals via
       command line.
 - [ ] Show current interval type and name in standard output.
 - [ ] Show time passed for current interval in standard output.
