@@ -2,7 +2,7 @@
 name = "lightningfocus"
 version = "0.1.0"
 edition = "2021"
-description = "A command line pomodoro timer written in rust"
+description = "A command line Pomodoro timer written in Rust"
 author = "gevhaz"
 license = "GPLv3"
 
