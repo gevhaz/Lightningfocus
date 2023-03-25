@@ -4,6 +4,13 @@ use clap::Parser;
 
 fn main() {
     let args = args::Args::parse();
+    if let Err(e) = run(args) {
+        eprintln!("{e}");
+        std::process::exit(1);
+    }
+}
+
+pub fn run(args: args::Args) -> Result<(), String> {
     println!("The work interval is set to {} minutes.", args.work);
     println!("The short break interval is set to {} minutes.", args.short);
     println!("The long break interval is set to {} minutes.", args.long);
