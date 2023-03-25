@@ -2,9 +2,9 @@
 
 ## Description
 
-Lightningfocus is a command line pomodoro timer written in Rust. It is intended
+Lightningfocus is a command line Pomodoro timer written in Rust. It is intended
 for rotating between a small number of tasks but works just as well as a classic
-pomodoro timer.
+Pomodoro timer.
 
 ## Installation
 
@@ -22,7 +22,7 @@ The following commands assume that Lightningfocus is installed, but you can run
 any of them by prepening `cargo run` to them when the root of the repository is
 your current working directory.
 
-You can (not yet) start a pomodoro session with the default intervals like such:
+You can (not yet) start a Pomodoro session with the default intervals like such:
 
 ```command
 $ focus
@@ -45,6 +45,6 @@ The default intervals are:
 - [ ] Show notifications when switching between work and breaks.
 - [ ] Allow interactive selection of tasks. The user should be able to enter
       tasks one-by-one which will then be looped through.
-- [ ] It should be possible to use the app as a pomodoro timer without naming
+- [ ] It should be possible to use the app as a Pomodoro timer without naming
       any tasks.
 - [ ] Allow setting default intervals in a configuration file.
