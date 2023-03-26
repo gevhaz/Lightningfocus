@@ -16,6 +16,9 @@ $ git clone https://github.com/gevhaz/Lightningfocus
 $ cargo install
 ````
 
+You will need to have the system package `libnotify` installed (or your
+distribution's equivalent).
+
 ## Usage
 
 The following commands assume that Lightningfocus is installed, but you can run
@@ -36,15 +39,19 @@ The default intervals are:
 | Short break       | 2                     |
 | Long break        | 5                     |
 
+Once you've run the command, a Work interval starts, and you are shown a desktop
+notification and a message in your terminal. You are notified in the same way
+when it is time for breaks or to work again.
+
 ## Capabilities
 
 - [x] Allow setting duration for work, short break, and long break intervals via
       command line.
 - [ ] Show current interval type and name in standard output.
 - [ ] Show time passed for current interval in standard output.
-- [ ] Show notifications when switching between work and breaks.
+- [x] Show notifications when switching between work and breaks.
 - [ ] Allow interactive selection of tasks. The user should be able to enter
       tasks one-by-one which will then be looped through.
-- [ ] It should be possible to use the app as a Pomodoro timer without naming
+- [x] It should be possible to use the app as a Pomodoro timer without naming
       any tasks.
 - [ ] Allow setting default intervals in a configuration file.
