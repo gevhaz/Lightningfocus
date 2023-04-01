@@ -16,37 +16,29 @@ fn main() {
     }
 }
 
+pub fn switch_interval(interval_message: &str, duration: u64) -> Result<(), String> {
+    let message = &format!("{} for {} minutes", interval_message, duration);
+    let notification = libnotify::Notification::new(message, None, None);
+    notification
+        .show()
+        .map_err(|e| format!("Failed to show notification: {e}"))?;
+    println!("{message}");
+    thread::sleep(Duration::from_secs(MINUTE * duration));
+    Ok(())
+}
+
 pub fn run(args: args::Args) -> Result<(), String> {
-    println!("The work interval is set to {} minutes.", args.work);
-    println!("The short break interval is set to {} minutes.", args.short);
-    println!("The long break interval is set to {} minutes.", args.long);
     libnotify::init("lightningfocus").map_err(|e| format!("Failed to intialize libnotify: {e}"))?;
-    let work_notification =
-        libnotify::Notification::new(&format!("Work for {} mintues", args.work), None, None);
-    let short_notification = libnotify::Notification::new(
-        &format!("Take a short break for {} mintues", args.short),
-        None,
-        None,
-    );
-    let long_notification = libnotify::Notification::new(
-        &format!("Take a long break for {} mintues", args.long),
-        None,
-        None,
-    );
     loop {
-        println!("Work for {} minutes.", args.work);
-        work_notification.show().map_err(|e| format!("Failed to show notification: {e}"))?;
-        thread::sleep(Duration::from_secs(MINUTE * args.work));
+        switch_interval("Work", args.work)
+            .map_err(|e| format!("Failed to switch interval: {e}"))?;
         for _ in 0..3 {
-            println!("Take a short break for {} minutes.", args.short);
-            short_notification.show().map_err(|e| format!("Failed to show notification: {e}"))?;
-            thread::sleep(Duration::from_secs(MINUTE * args.short));
-            println!("Work for {} minutes.", args.work);
-            work_notification.show().map_err(|e| format!("Failed to show notification: {e}"))?;
-            thread::sleep(Duration::from_secs(MINUTE * args.work));
+            switch_interval("Take a short break", args.short)
+                .map_err(|e| format!("Failed to switch interval: {e}"))?;
+            switch_interval("Work", args.work)
+                .map_err(|e| format!("Failed to switch interval: {e}"))?;
         }
-        println!("Take a long break for {} minutes.", args.long);
-        long_notification.show().map_err(|e| format!("Failed to show notification: {e}"))?;
-        thread::sleep(Duration::from_secs(MINUTE * args.long));
+        switch_interval("Take a long break", args.long)
+            .map_err(|e| format!("Failed to switch interval: {e}"))?;
     }
 }
