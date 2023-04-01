@@ -4,6 +4,7 @@ extern crate libnotify;
 
 use clap::Parser;
 use core::time::Duration;
+use std::process::Command;
 use std::thread;
 
 const MINUTE: u64 = 60;
@@ -18,6 +19,14 @@ fn main() {
 
 pub fn switch_interval(interval_message: &str, duration: u64) -> Result<(), String> {
     let message = &format!("{} for {} minutes", interval_message, duration);
+    Command::new("canberra-gtk-play")
+        .arg("--id")
+        .arg("complete")
+        .arg("--description")
+        .arg("Lightningfocus pomodoro notification")
+        .spawn()
+        .map_err(|e| format!("Couldn't play notification sound: {e}"))?;
+
     let notification = libnotify::Notification::new(message, None, None);
     notification
         .show()
