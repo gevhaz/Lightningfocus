@@ -1,3 +1,5 @@
+![Lightningfocus logo](https://github.com/gevhaz/Lightningfocus/raw/logo/lightningfocus-logo-text.png)
+
 # Lightningfocus
 
 ## Description
