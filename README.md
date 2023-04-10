@@ -52,8 +52,8 @@ when it is time for breaks or to work again.
 - [ ] Show current interval type and name in standard output.
 - [ ] Show time passed for current interval in standard output.
 - [x] Show notifications when switching between work and breaks.
-- [ ] Allow interactive selection of tasks. The user should be able to enter
-      tasks one-by-one which will then be looped through.
+- [x] Allow interactive specification of tasks. The user should be able to enter
+      tasks one-by-one which will then be looped through as work intervals.
 - [x] It should be possible to use the app as a Pomodoro timer without naming
       any tasks.
 - [ ] Allow setting default intervals in a configuration file.
