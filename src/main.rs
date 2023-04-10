@@ -4,7 +4,10 @@ extern crate libnotify;
 
 use clap::Parser;
 use core::time::Duration;
+use std::io;
+use std::io::BufRead;
 use std::process::Command;
+use std::str;
 use std::thread;
 
 const MINUTE: u64 = 60;
@@ -37,18 +40,54 @@ pub fn switch_interval(interval_message: &str, duration: u64) -> Result<(), Stri
     Ok(())
 }
 
+pub fn prompt_for_tasks() -> Result<Vec<String>, String> {
+    println!("What tasks do you want to work on? (empty starts the timer)");
+    let mut tasks: Vec<String> = vec![];
+
+    let mut lines = io::stdin().lock().lines();
+    while let Some(line) = lines.next() {
+        let last_input = line.unwrap();
+        if last_input.len() == 0 {
+            break;
+        }
+        tasks.push(last_input);
+    }
+    Ok(tasks)
+}
+
 pub fn run(args: args::Args) -> Result<(), String> {
     libnotify::init("lightningfocus").map_err(|e| format!("Failed to intialize libnotify: {e}"))?;
+
+    let tasks: Vec<String> = prompt_for_tasks().unwrap();
+    let mut interval_number: usize = 0;
     loop {
-        switch_interval("Work", args.work)
+        if tasks.len() == 0 {
+            switch_interval("Work", args.work)
+                .map_err(|e| format!("Failed to switch interval: {e}"))?;
+        } else {
+            switch_interval(
+                &format!("Work on task '{}'", tasks[interval_number % tasks.len()]),
+                args.work,
+            )
             .map_err(|e| format!("Failed to switch interval: {e}"))?;
+        }
         for _ in 0..3 {
             switch_interval("Take a short break", args.short)
                 .map_err(|e| format!("Failed to switch interval: {e}"))?;
-            switch_interval("Work", args.work)
+            interval_number += 1;
+            if tasks.len() == 0 {
+                switch_interval("Work", args.work)
+                    .map_err(|e| format!("Failed to switch interval: {e}"))?;
+            } else {
+                switch_interval(
+                    &format!("Work on task '{}'", tasks[interval_number % tasks.len()]),
+                    args.work,
+                )
                 .map_err(|e| format!("Failed to switch interval: {e}"))?;
+            }
         }
         switch_interval("Take a long break", args.long)
             .map_err(|e| format!("Failed to switch interval: {e}"))?;
+        interval_number += 1;
     }
 }
