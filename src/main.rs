@@ -18,7 +18,8 @@ fn main() {
 }
 
 pub fn switch_interval(interval_message: &str, duration: u64) -> Result<(), String> {
-    let message = &format!("{} for {} minutes", interval_message, duration);
+    let body = &format!("{} for {} minutes", interval_message, duration);
+    let summary = "Lightningfocus";
     Command::new("canberra-gtk-play")
         .arg("--id")
         .arg("complete")
@@ -27,11 +28,11 @@ pub fn switch_interval(interval_message: &str, duration: u64) -> Result<(), Stri
         .spawn()
         .map_err(|e| format!("Couldn't play notification sound: {e}"))?;
 
-    let notification = libnotify::Notification::new(message, None, None);
+    let notification = libnotify::Notification::new(summary, Some(body.as_ref()), None);
     notification
         .show()
         .map_err(|e| format!("Failed to show notification: {e}"))?;
-    println!("{message}");
+    println!("{body}");
     thread::sleep(Duration::from_secs(MINUTE * duration));
     Ok(())
 }
