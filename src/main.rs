@@ -6,7 +6,7 @@ use clap::Parser;
 use core::time::Duration;
 use std::io;
 use std::io::BufRead;
-use std::process::Command;
+use std::process::{Command, Stdio};
 use std::str;
 use std::thread;
 
@@ -28,6 +28,7 @@ pub fn switch_interval(interval_message: &str, duration: u64) -> Result<(), Stri
         .arg("complete")
         .arg("--description")
         .arg("Lightningfocus pomodoro notification")
+        .stderr(Stdio::null())
         .spawn()
         .map_err(|e| format!("Couldn't play notification sound: {e}"))?;
 
