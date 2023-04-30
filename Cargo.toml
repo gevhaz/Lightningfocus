@@ -8,4 +8,7 @@ license = "GPLv3"
 
 [dependencies]
 clap = { version = "4.1.10", features = ["derive"] }
+crossterm = "0.26.1"
 libnotify = "1.0.3"
+tui = "0.19.0"
+tui-input = "0.7.0"

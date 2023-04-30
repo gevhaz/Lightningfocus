@@ -29,7 +29,7 @@ your current working directory.
 
 You can (not yet) start a Pomodoro session with the default intervals like such:
 
-```command
+```console
 $ focus
 ```
 
@@ -57,3 +57,8 @@ when it is time for breaks or to work again.
 - [x] It should be possible to use the app as a Pomodoro timer without naming
       any tasks.
 - [ ] Allow setting default intervals in a configuration file.
+- [ ] On quitting program show summary.
+- [ ] Allow completing a task so it will no longer be part of the loop.
+- [ ] Allow saving tasks for future use or selection
+- [ ] Allow saving entered tasks to a list of tasks to choose from in the future.
+- [ ] Integrate with taskwarrior to get tasks to work on
