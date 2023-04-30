@@ -86,6 +86,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "crossterm"
+version = "0.26.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a84cda67535339806297f1b331d6dd6320470d2a0fe65381e79ee9e156dd3d13"
+dependencies = [
+ "bitflags",
+ "crossterm_winapi",
+ "libc",
+ "mio",
+ "parking_lot",
+ "signal-hook",
+ "signal-hook-mio",
+ "winapi",
+]
+
+[[package]]
 name = "crossterm_winapi"
 version = "0.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -271,8 +287,10 @@ name = "lightningfocus"
 version = "0.1.0"
 dependencies = [
  "clap",
+ "crossterm 0.26.1",
  "libnotify",
  "tui",
+ "tui-input",
 ]
 
 [[package]]
@@ -494,8 +512,18 @@ checksum = "ccdd26cbd674007e649a272da4475fb666d3aa0ad0531da7136db6fab0e5bad1"
 dependencies = [
  "bitflags",
  "cassowary",
- "crossterm",
+ "crossterm 0.25.0",
  "unicode-segmentation",
+ "unicode-width",
+]
+
+[[package]]
+name = "tui-input"
+version = "0.7.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "40419b12b152aaa1a295741903c9b6253e66ef07e0630e2e2503c736f280fdde"
+dependencies = [
+ "crossterm 0.26.1",
  "unicode-width",
 ]
 
