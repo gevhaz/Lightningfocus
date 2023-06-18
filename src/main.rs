@@ -1,13 +1,17 @@
 mod args;
 
 extern crate libnotify;
+extern crate glib;
 
+// use crate::Error::GlibError;
+use glib::error::Error;
 use clap::Parser;
 use core::time::Duration;
 use std::io;
 use std::io::BufRead;
 use std::process::{Command, Stdio};
 use std::str;
+use std::fmt;
 use std::thread;
 
 const MINUTE: u64 = 60;
@@ -20,7 +24,34 @@ fn main() {
     }
 }
 
-pub fn switch_interval(interval_message: &str, duration: u64) -> Result<(), String> {
+pub type Result<T> = std::result::Result<T, Error>;
+
+#[derive(Debug)]
+enum Error {
+    Io(io::Error),
+    GlibError()
+}
+
+impl From<io::Error> for Error {
+    fn from(e: io::Error) -> Self {
+        Self::Io(e)
+    }
+}
+
+impl fmt::Display for Error {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "{}",
+            match self {
+                Self::Io(e) => e.to_string(),
+                glib::error::Error => String::from("Error showing notification"),
+            }
+            )
+    }
+}
+
+pub fn switch_interval(interval_message: &str, duration: u64) -> Result<()> {
     let body = &format!("{} for {} minutes", interval_message, duration);
     let summary = "Lightningfocus";
     Command::new("canberra-gtk-play")
@@ -29,19 +60,15 @@ pub fn switch_interval(interval_message: &str, duration: u64) -> Result<(), Stri
         .arg("--description")
         .arg("Lightningfocus pomodoro notification")
         .stderr(Stdio::null())
-        .spawn()
-        .map_err(|e| format!("Couldn't play notification sound: {e}"))?;
+        .spawn()?;
 
     let notification = libnotify::Notification::new(summary, Some(body.as_ref()), None);
-    notification
-        .show()
-        .map_err(|e| format!("Failed to show notification: {e}"))?;
+    notification.show()?;
     println!("{body}");
     thread::sleep(Duration::from_secs(MINUTE * duration));
-    Ok(())
 }
 
-pub fn prompt_for_tasks() -> Result<Vec<String>, String> {
+pub fn prompt_for_tasks() -> Result<Vec<String>> {
     println!("What tasks do you want to work on? (empty starts the timer)");
     let mut tasks: Vec<String> = vec![];
 
@@ -56,7 +83,7 @@ pub fn prompt_for_tasks() -> Result<Vec<String>, String> {
     Ok(tasks)
 }
 
-pub fn run(args: args::Args) -> Result<(), String> {
+pub fn run(args: args::Args) -> Result<()> {
     libnotify::init("lightningfocus").map_err(|e| format!("Failed to intialize libnotify: {e}"))?;
 
     let tasks: Vec<String> = prompt_for_tasks().unwrap();
