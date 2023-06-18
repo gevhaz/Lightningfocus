@@ -8,4 +8,5 @@ license = "GPLv3"
 
 [dependencies]
 clap = { version = "4.1.10", features = ["derive"] }
+glib = "0.17.10"
 libnotify = "1.0.3"
